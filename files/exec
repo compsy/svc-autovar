@@ -1,19 +1,24 @@
 #!/usr/bin/env Rscript
 args <- commandArgs(trailingOnly=TRUE)
 
-res <- jsonlite::fromJSON(txt=args[1])
+res <- jsonlite::fromJSON(args[1])
 data <- res$data
-timestamp = res$timestamp
+timestamp <- res$timestamp
 
-sink('/dev/null')
-out <- capture.output({ 
-  var_netw <- autovar::generate_networks(data= data, timestamp = timestamp)
-})
-sink()
+print('Starting')
 
+cat('\n')
+cat('\n')
+cat('\n')
+
+var_netw <- autovar::generate_networks(data= data, timestamp = timestamp)
+print('Done')
 #var_netw <- "[{\"links\":[{\"source\":0,\"target\":4,\"coef\":\"0.146967788052502\"},{\"source\":5,\"target\":4,\"coef\":\"-0.0846369033252714\"},{\"source\":2,\"target\":5,\"coef\":\"-0.431935792746544\"}],\"nodes\":[{\"index\":0,\"name\":\"humor\",\"type\":\"Neutraal\"},{\"index\":1,\"name\":\"onrust\",\"type\":\"Neutraal\"},{\"index\":2,\"name\":\"iets_betekenen\",\"type\":\"Neutraal\"},{\"index\":3,\"name\":\"ontspanning\",\"type\":\"Neutraal\"},{\"index\":4,\"name\":\"hier_en_nu\",\"type\":\"Neutraal\"},{\"index\":5,\"name\":\"concentratie\",\"type\":\"Neutraal\"}]},{\"links\":[{\"source\":3,\"target\":1,\"coef\":\"-0.397683540580912\"},{\"source\":5,\"target\":1,\"coef\":\"-0.212071147240632\"},{\"source\":5,\"target\":3,\"coef\":\"0.289130627206111\"}],\"nodes\":[{\"index\":0,\"name\":\"humor\",\"type\":\"Neutraal\"},{\"index\":1,\"name\":\"onrust\",\"type\":\"Neutraal\"},{\"index\":2,\"name\":\"iets_betekenen\",\"type\":\"Neutraal\"},{\"index\":3,\"name\":\"ontspanning\",\"type\":\"Neutraal\"},{\"index\":4,\"name\":\"hier_en_nu\",\"type\":\"Neutraal\"},{\"index\":5,\"name\":\"concentratie\",\"type\":\"Neutraal\"}]},[{\"source\":\"iets_betekenen\",\"target\":\"concentratie\",\"sign\":-1},{\"source\":\"humor\",\"target\":\"hier_en_nu\",\"sign\":1}]]"
-var_netw <- gsub("\"", "\\\\\\\"", var_netw)
+#var_netw <- gsub("\"", "\\\\\\\"", var_netw)
 
 # Echo to return the result to the python wrapper
-result <- paste('echo {\\"result\\": ',var_netw,'}')
-system(result)
+result <- paste('{\"result\": ',var_netw,'}')
+cat('\n')
+
+cat(result)
+#cat('{}')
