@@ -4,6 +4,8 @@ action_name := $(PROJECT_NAME)
 
 exists := $(strip $(shell bx wsk action list | awk '{print $1}' | grep $(action_name)))
 
+platform=$(shell uname)
+
 .DEFAULT_GOAL := all
 
 docker: build push
@@ -11,11 +13,19 @@ all: build push service
 
 build:
 	@echo "Building $(image_name) to dockerhub"
+ifeq ($(platform),Darwin)
+	docker build -t $(image_name) .
+else
 	sudo docker build -t $(image_name) .
+endif
 
 push:
 	@echo "Pushing $(image_name) to dockerhub"
+ifeq ($(platform),Darwin)
 	sudo docker push $(image_name)
+else
+	sudo docker push $(image_name)
+endif
 
 service:
 ifndef exists
