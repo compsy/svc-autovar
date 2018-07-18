@@ -22,9 +22,17 @@ endif
 push:
 	@echo "Pushing $(image_name) to dockerhub"
 ifeq ($(platform),Darwin)
-	sudo docker push $(image_name)
+	docker push $(image_name)
 else
 	sudo docker push $(image_name)
+endif
+
+test:
+	@echo "Running $(image_name) locally for testing"
+ifeq ($(platform),Darwin)
+	docker run --rm -p 8080:8080 --name $(PROJECT_NAME)-test $(image_name) 
+else
+	sudo docker run --rm -p 8080:8080 --name $(PROJECT_NAME)-test $(image_name) 
 endif
 
 service:
